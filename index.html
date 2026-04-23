@@ -2,405 +2,321 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Robot de Conciliaciones — GlobalTI</title>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://evermolinas-tech.github.io/globalti-demos/">
 <meta property="og:title" content="Robot de Conciliaciones — GlobalTI RPA">
 <meta property="og:description" content="Demo interactiva: el robot concilia extractos bancarios, procesadoras y ERP en forma 100% automática. 89% de match · 11.000 registros en 4 minutos.">
 <meta name="description" content="Demo interactiva del Robot de Conciliaciones GlobalTI: RPA + IA, 100% automático, 80%+ de match.">
-<meta name="theme-color" content="#4A2F8F">
+<meta name="theme-color" content="#1e1048">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --purple:#4A2F8F;--purple-d:#1e1048;--purple-l:#6B4BC7;
-  --purple-pale:#EDE9FF;--purple-mid:#8B6DD4;--purple-glow:rgba(74,47,143,.15);
-  --text:#0f0f1a;--muted:#64748b;--subtle:#94a3b8;--border:#e8e4f8;
-  --green:#0f7a43;--green-pale:#dcfce7;--green-border:#86efac;
-  --amber:#92400e;--amber-pale:#fef3c7;--amber-border:#fcd34d;
-  --red:#991b1b;--red-pale:#fee2e2;--red-border:#fca5a5;
-  --bg:#f5f3ff;--surface:rgba(255,255,255,.85);
+  --p:#4A2F8F;--pd:#1e1048;--pl:#7c5cc8;
+  --pp:#EDE9FF;--pm:#8B6DD4;
+  --text:#0f0f1a;--muted:#64748b;--subtle:#94a3b8;--border:#ece8f8;
+  --g:#0d6e3c;--gp:#d1fae5;--gb:#6ee7b7;
+  --a:#92400e;--ap:#fef3c7;--ab:#fcd34d;
+  --r:#991b1b;--rp:#fee2e2;--rb:#fca5a5;
+  --nav-h:80px;
 }
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;height:100%}
 body{
   font-family:'Space Grotesk',system-ui,sans-serif;
-  background:var(--bg);color:var(--text);
-  min-height:100dvh;
-  padding-bottom:64px;
+  background:#0f0a1e;color:var(--text);
+  min-height:100dvh;overflow-x:hidden;
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 8px);
 }
 
-/* ── SCROLL PROGRESS BAR ── */
-#scroll-prog{
-  position:fixed;top:0;left:0;height:3px;width:0%;
-  background:linear-gradient(90deg,#7c3aed,#a78bfa);
-  z-index:100;transition:width .1s linear;
-  border-radius:0 2px 2px 0;
-}
-
-/* ── STICKY HEADER ── */
-.header{
-  position:sticky;top:0;z-index:90;
-  background:rgba(255,255,255,.88);
+/* ─── TOPBAR ─── */
+.topbar{
+  background:rgba(15,10,30,0.9);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
+  border-bottom:1px solid rgba(255,255,255,.08);
   padding:13px 20px;
   display:flex;align-items:center;gap:12px;
+  position:sticky;top:0;z-index:80;
 }
 .brand{display:flex;align-items:center;gap:10px;flex:1}
 .brand-icon{
-  width:32px;height:32px;
-  background:var(--purple);border-radius:9px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  width:34px;height:34px;
+  background:linear-gradient(135deg,#6B4BC7,#4A2F8F);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;box-shadow:0 2px 10px rgba(107,75,199,.4);
 }
-.brand-name{font-size:14px;font-weight:700;color:var(--purple)}
-.brand-sub{font-size:11px;color:var(--subtle)}
-.header-tag{
-  background:var(--purple-pale);color:var(--purple-l);
-  padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;
-  white-space:nowrap;flex-shrink:0;
+.brand-name{font-size:14px;font-weight:700;color:white}
+.brand-sub{font-size:10px;color:rgba(255,255,255,.4);margin-top:1px}
+.topbar-badge{
+  background:rgba(107,75,199,.25);
+  border:1px solid rgba(107,75,199,.4);
+  color:#c4b5fd;font-size:10px;font-weight:600;
+  padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;
 }
 
-/* ── PAGE CONTAINER ── */
-.page{max-width:720px;margin:0 auto;padding:0 16px}
+/* ─── PROGRESS BAR ─── */
+.progress-track{
+  position:sticky;top:60px;z-index:79;
+  background:rgba(15,10,30,.95);
+  backdrop-filter:blur(20px);
+  padding:10px 20px;
+  display:flex;align-items:center;gap:6px;
+}
+.p-conn{flex:1;height:2px;background:rgba(255,255,255,.1);border-radius:1px;transition:background .4s}
+.p-conn.done{background:var(--pm)}
+.p-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.15);
+  transition:all .35s;cursor:pointer;flex-shrink:0;
+}
+.p-dot.active{background:white;border-color:white;transform:scale(1.4);box-shadow:0 0 8px rgba(255,255,255,.5)}
+.p-dot.done{background:var(--pm);border-color:var(--pm)}
 
-/* ── HERO ── */
+/* ─── SLIDE WRAPPER ─── */
+.slides{display:flex;flex-direction:column}
+.slide{display:none}
+.slide.active{display:block;animation:fadeUp .45s cubic-bezier(.16,1,.3,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── HERO ─── */
 .hero{
-  background:linear-gradient(160deg,var(--purple-d) 0%,#3d2080 50%,var(--purple) 100%);
-  border-radius:0 0 32px 32px;
-  padding:60px 24px 52px;
+  padding:48px 24px 52px;
   text-align:center;
   position:relative;overflow:hidden;
-  margin-bottom:32px;
+  background:linear-gradient(175deg,#0f0a1e 0%,#1e1048 40%,#2d1b6e 70%,#3d2491 100%);
 }
-.hero-orb{
-  position:absolute;border-radius:50%;
-  filter:blur(60px);pointer-events:none;
-}
-.hero-orb-1{width:300px;height:300px;background:rgba(139,109,212,.35);top:-80px;right:-60px;}
-.hero-orb-2{width:200px;height:200px;background:rgba(74,47,143,.4);bottom:-40px;left:-40px;}
-.hero-inner{position:relative;z-index:1;max-width:540px;margin:0 auto}
-.hero-eyebrow{
+.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px)}
+.orb-a{width:280px;height:280px;background:rgba(124,92,200,.3);top:-60px;right:-80px}
+.orb-b{width:200px;height:200px;background:rgba(74,47,143,.35);bottom:-60px;left:-40px}
+.orb-c{width:150px;height:150px;background:rgba(167,139,250,.15);top:40%;left:50%;transform:translateX(-50%)}
+.hero-inner{position:relative;z-index:1;max-width:520px;margin:0 auto}
+.hero-pill{
   display:inline-flex;align-items:center;gap:7px;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.2);
-  color:rgba(255,255,255,.85);
-  font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-  padding:6px 14px;border-radius:30px;margin-bottom:24px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.7);font-size:11px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:7px 16px;border-radius:30px;margin-bottom:28px;
 }
-.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.live-green{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:glow 2s ease infinite;flex-shrink:0}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}60%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
 .hero-title{
-  font-size:clamp(28px,6vw,42px);
-  font-weight:700;color:white;line-height:1.15;
-  margin-bottom:16px;letter-spacing:-.02em;
+  font-size:clamp(30px,7vw,48px);
+  font-weight:700;color:white;line-height:1.1;
+  letter-spacing:-.03em;margin-bottom:18px;
 }
-.hero-title span{color:#c4b5fd}
-.hero-sub{
-  font-size:15px;color:rgba(255,255,255,.68);
-  line-height:1.7;max-width:420px;margin:0 auto 28px;
-}
-.hero-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px}
-.hero-chip{
-  background:rgba(255,255,255,.1);
-  border:1px solid rgba(255,255,255,.18);
-  color:white;font-size:12px;font-weight:500;
-  padding:6px 14px;border-radius:20px;
-}
+.hero-title em{font-style:normal;color:#a78bfa}
+.hero-desc{font-size:15px;color:rgba(255,255,255,.55);line-height:1.75;max-width:380px;margin:0 auto 32px}
 .hero-metrics{
   display:grid;grid-template-columns:repeat(2,1fr);gap:10px;
-  max-width:380px;margin:0 auto;
+  max-width:360px;margin:0 auto;
 }
-.hero-metric{
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:14px;padding:14px;text-align:left;
+.metric{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;padding:16px 14px;text-align:left;
 }
-.hero-metric-val{font-size:26px;font-weight:700;color:white;line-height:1}
-.hero-metric-val span{font-size:14px;font-weight:500;opacity:.7}
-.hero-metric-label{font-size:11px;color:rgba(255,255,255,.55);margin-top:4px}
-.hero-scroll-hint{
-  margin-top:28px;font-size:12px;color:rgba(255,255,255,.35);
-  display:flex;align-items:center;justify-content:center;gap:6px;
-}
-.hero-scroll-arrow{animation:bounceY 2s ease infinite}
-@keyframes bounceY{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+.metric-val{font-size:28px;font-weight:700;color:white;line-height:1;letter-spacing:-.02em}
+.metric-val sup{font-size:14px;opacity:.6;font-weight:500}
+.metric-lbl{font-size:11px;color:rgba(255,255,255,.4);margin-top:5px}
+.hero-hint{margin-top:24px;font-size:12px;color:rgba(255,255,255,.25);letter-spacing:.02em}
 
-/* ── STEP CONNECTOR ── */
-.step-connector{
-  display:flex;align-items:center;gap:12px;
-  padding:0 4px;margin:6px 0;
-}
-.step-line{flex:1;height:1px;background:var(--border)}
-.step-num{
-  width:28px;height:28px;
-  background:var(--purple-pale);color:var(--purple);
-  border-radius:50%;font-size:11px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;border:1.5px solid var(--purple-mid);
+/* ─── CONTENT AREA ─── */
+.content{
+  background:white;
+  border-radius:24px 24px 0 0;
+  margin-top:-20px;
+  position:relative;z-index:1;
+  min-height:100%;
 }
 
-/* ── SECTION CARD ── */
-.scard{
-  background:white;border:1px solid var(--border);
-  border-radius:20px;padding:22px;
-  margin-bottom:12px;
-  box-shadow:0 1px 3px rgba(0,0,0,.04),0 8px 24px rgba(74,47,143,.06);
-}
-
-/* ── SECTION HEADER ── */
-.sec-badge{
+/* ─── STEP CARD ─── */
+.step-card{padding:26px 20px}
+.step-label{
   display:inline-flex;align-items:center;gap:6px;
-  background:var(--purple-pale);color:var(--purple-l);
-  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  padding:4px 11px;border-radius:20px;margin-bottom:12px;
+  background:var(--pp);color:var(--pl);
+  font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:5px 11px;border-radius:30px;margin-bottom:14px;
 }
-.sec-title{font-size:18px;font-weight:700;line-height:1.3;margin-bottom:6px;letter-spacing:-.01em}
-.sec-sub{font-size:13px;color:var(--muted);line-height:1.65}
+.step-title{font-size:20px;font-weight:700;line-height:1.25;letter-spacing:-.02em;margin-bottom:8px}
+.step-sub{font-size:13px;color:var(--muted);line-height:1.7}
 
-/* ── ROBOT STATUS ── */
-.robot-bar{
+/* ─── DIVIDER ─── */
+.divider{height:1px;background:var(--border);margin:0 20px}
+
+/* ─── ROBOT BAR ─── */
+.rbar{
   display:flex;align-items:center;gap:10px;
-  background:linear-gradient(135deg,var(--purple-pale),#f5f0ff);
-  border:1px solid #d8d0f5;
-  border-radius:12px;padding:11px 14px;
-  font-size:13px;color:var(--purple);font-weight:500;
+  background:linear-gradient(135deg,#f5f0ff,var(--pp));
+  border:1px solid #d8d0f5;border-radius:14px;
+  padding:11px 14px;font-size:13px;color:var(--p);font-weight:500;
 }
-.r-icon{
-  width:30px;height:30px;background:var(--purple);
+.ricon{
+  width:30px;height:30px;background:var(--p);
   border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
-.live-dot{
-  display:inline-block;width:6px;height:6px;
-  background:#22c55e;border-radius:50%;
-  animation:livepulse 1.8s ease infinite;vertical-align:middle;margin-right:3px;
-}
-@keyframes livepulse{
-  0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}
-  60%{box-shadow:0 0 0 5px rgba(34,197,94,0)}
+.live{
+  display:inline-block;width:6px;height:6px;background:#22c55e;
+  border-radius:50%;animation:glow 1.8s ease infinite;vertical-align:middle;margin-right:3px;
 }
 
-/* ── TERMINAL ── */
-.terminal{
-  background:#0d0d1a;border-radius:12px;overflow:hidden;
-  border:1px solid #1e1e35;
-}
-.t-bar{
-  background:#161625;padding:8px 14px;
-  display:flex;align-items:center;gap:6px;border-bottom:1px solid #1e1e35;
-}
-.t-dot{width:9px;height:9px;border-radius:50%}
-.t-dot.r{background:#ff5f57}.t-dot.y{background:#febc2e}.t-dot.g{background:#28c840}
-.t-url{
-  font-family:'JetBrains Mono',monospace;font-size:10px;color:#4b5563;
-  margin-left:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;
-}
-.t-body{
-  padding:14px 16px;
-  font-family:'JetBrains Mono',monospace;font-size:11px;
-  color:#6b7280;line-height:2;
-}
-.tc{color:#7ec8e3}.tg{color:#4ade80}.ta{color:#fbbf24}.tw{color:#e2e8f0;font-weight:500}
+/* ─── TERMINAL ─── */
+.term{background:#0b0b18;border-radius:14px;overflow:hidden;border:1px solid #1a1a2e}
+.tbar{background:#131320;padding:9px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #1a1a2e}
+.td{width:9px;height:9px;border-radius:50%}.td.r{background:#ff5f57}.td.y{background:#febc2e}.td.g{background:#28c840}
+.turl{font-family:'JetBrains Mono',monospace;font-size:10px;color:#374151;margin-left:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.tbody{padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#4b5563;line-height:2}
+.kb{color:#67e8f9}.kg{color:#4ade80}.ka{color:#fbbf24}.kw{color:#f1f5f9;font-weight:500}
 
-/* ── FILE LIST ── */
-.file-list{display:flex;flex-direction:column;gap:7px}
-.file-item{
+/* ─── FILE ITEM ─── */
+.flist{display:flex;flex-direction:column;gap:7px}
+.fitem{
   display:flex;align-items:center;gap:10px;
-  border:1px solid var(--border);border-radius:11px;
+  border:1px solid var(--border);border-radius:12px;
   padding:10px 13px;background:white;
-  transition:border-color .2s,background .2s;
+  transition:all .2s;
 }
-.file-item.hi{border-color:var(--purple-mid);background:var(--purple-pale)}
-.file-item.dim{opacity:.38}
-.file-emoji{font-size:20px;flex-shrink:0}
-.file-name{font-size:12px;font-weight:600;line-height:1.3}
-.file-meta{font-size:11px;color:var(--subtle)}
+.fitem.hi{border-color:var(--pm);background:var(--pp)}
+.fitem.dim{opacity:.35}
+.femoji{font-size:20px;flex-shrink:0}
+.fname{font-size:12px;font-weight:600}
+.fmeta{font-size:11px;color:var(--subtle)}
 
-/* ── SCREEN ROW: stacked mobile → side-by-side tablet ── */
-.screen-row{display:flex;flex-direction:column;gap:10px}
+/* ─── SCREEN ROW ─── */
+.srow{display:flex;flex-direction:column;gap:10px}
 
-/* ── TABS ── */
-.tab-row{
-  display:flex;background:var(--purple-pale);
-  border-radius:12px;padding:4px;gap:4px;
-}
-.tab-btn{
-  flex:1;padding:9px 8px;font-size:12px;font-weight:600;
+/* ─── TABS ─── */
+.tabs{display:flex;background:#f3f0fc;border-radius:12px;padding:4px;gap:3px}
+.tbtn{
+  flex:1;padding:9px;font-size:12px;font-weight:600;
   font-family:'Space Grotesk',sans-serif;border:none;
   border-radius:9px;cursor:pointer;transition:all .2s;text-align:center;
-  background:transparent;color:var(--purple-l);
+  background:transparent;color:var(--pm);
 }
-.tab-btn.on{background:white;color:var(--purple);box-shadow:0 1px 4px rgba(74,47,143,.15)}
+.tbtn.on{background:white;color:var(--p);box-shadow:0 1px 5px rgba(74,47,143,.18)}
 
-/* ── NORMALIZE ── */
-.norm-wrap{display:flex;flex-direction:column;gap:8px}
-.norm-box{background:#fafaf9;border:1px solid var(--border);border-radius:11px;padding:14px}
-.norm-box.after{border-color:var(--purple-mid);background:var(--purple-pale)}
-.norm-label{font-size:10px;font-weight:700;color:var(--subtle);text-transform:uppercase;letter-spacing:.07em;margin-bottom:9px}
-.norm-box.after .norm-label{color:var(--purple-l)}
-.norm-row{
-  font-family:'JetBrains Mono',monospace;font-size:11px;
-  padding:4px 0;border-bottom:1px solid #eee9ff;display:flex;gap:10px;
-}
-.norm-row:last-child{border-bottom:none}
-.nc{flex:1;color:#94a3b8}
-.nc.hi{color:var(--purple-l);font-weight:500}
-.norm-arrow{
-  text-align:center;font-size:20px;color:var(--purple-mid);
-  font-weight:700;transform:rotate(90deg);
-  margin:2px 0;
-}
+/* ─── NORM ─── */
+.nwrap{display:flex;flex-direction:column;gap:8px}
+.nbox{background:#fafafa;border:1px solid var(--border);border-radius:12px;padding:14px}
+.nbox.after{border-color:var(--pm);background:var(--pp)}
+.nlbl{font-size:10px;font-weight:700;color:var(--subtle);text-transform:uppercase;letter-spacing:.07em;margin-bottom:9px}
+.nbox.after .nlbl{color:var(--pl)}
+.nrow{font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 0;border-bottom:1px solid rgba(139,109,212,.1);display:flex;gap:10px}
+.nrow:last-child{border-bottom:none}
+.nc{flex:1;color:#94a3b8}.nc.hi{color:var(--pl);font-weight:500}
+.narr{text-align:center;font-size:20px;color:var(--pm);font-weight:700;transform:rotate(90deg)}
 
-/* ── RULES ── */
+/* ─── RULES ─── */
 .rules{display:flex;flex-direction:column;gap:8px}
-.rule-item{
-  display:flex;align-items:flex-start;gap:10px;
-  padding:12px;background:#fafaf9;border:1px solid var(--border);
-  border-radius:12px;font-size:13px;
-}
-.rule-num{
-  width:24px;height:24px;flex-shrink:0;
-  background:var(--purple);color:white;
-  border-radius:7px;font-size:11px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;margin-top:1px;
-}
-.rule-text{line-height:1.65;color:var(--text)}
-.rule-text strong{color:var(--purple)}
+.rule{display:flex;align-items:flex-start;gap:10px;padding:13px;background:#fafafa;border:1px solid var(--border);border-radius:13px;font-size:13px}
+.rnum{width:24px;height:24px;flex-shrink:0;background:var(--p);color:white;border-radius:7px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.rtxt{line-height:1.65}.rtxt strong{color:var(--p)}
 
-/* ── STATS ── */
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat-chip{border-radius:14px;padding:14px;text-align:center;border:1px solid transparent}
-.stat-chip.ok{background:var(--green-pale);border-color:var(--green-border)}
-.stat-chip.warn{background:var(--amber-pale);border-color:var(--amber-border)}
-.stat-chip.err{background:var(--red-pale);border-color:var(--red-border)}
-.stat-val{font-size:26px;font-weight:700;line-height:1}
-.stat-chip.ok .stat-val{color:var(--green)}
-.stat-chip.warn .stat-val{color:var(--amber)}
-.stat-chip.err .stat-val{color:var(--red)}
-.stat-label{font-size:10px;margin-top:4px;font-weight:600;opacity:.8}
-.stat-chip.ok .stat-label{color:var(--green)}
-.stat-chip.warn .stat-label{color:var(--amber)}
-.stat-chip.err .stat-label{color:var(--red)}
+/* ─── STATS ─── */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.schip{border-radius:14px;padding:14px 8px;text-align:center;border:1px solid transparent}
+.schip.ok{background:var(--gp);border-color:var(--gb)}.schip.warn{background:var(--ap);border-color:var(--ab)}.schip.err{background:var(--rp);border-color:var(--rb)}
+.sval{font-size:26px;font-weight:700;line-height:1}
+.schip.ok .sval{color:var(--g)}.schip.warn .sval{color:var(--a)}.schip.err .sval{color:var(--r)}
+.slbl{font-size:10px;margin-top:4px;font-weight:600}
+.schip.ok .slbl{color:var(--g)}.schip.warn .slbl{color:var(--a)}.schip.err .slbl{color:var(--r)}
 
-/* ── TABLE ── */
-.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;-webkit-overflow-scrolling:touch}
-.rtable{width:100%;border-collapse:collapse;font-size:11px;min-width:400px}
-.rtable th{background:var(--purple);color:white;padding:9px 11px;text-align:left;font-weight:600;font-size:10px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
-.rtable th:first-child{border-radius:0}
-.rtable td{padding:9px 11px;border-bottom:1px solid #f3f0fc;font-family:'JetBrains Mono',monospace;white-space:nowrap;font-size:11px}
-.rtable tr:last-child td{border-bottom:none}
-.rtable tr:hover td{background:#faf8ff}
-.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;font-family:'Space Grotesk',sans-serif;white-space:nowrap;letter-spacing:.02em}
-.badge.ok{background:var(--green-pale);color:var(--green)}
-.badge.warn{background:var(--amber-pale);color:var(--amber)}
-.badge.err{background:var(--red-pale);color:var(--red)}
+/* ─── TABLE ─── */
+.twrap{overflow-x:auto;border:1px solid var(--border);border-radius:13px;-webkit-overflow-scrolling:touch}
+.rtable{width:100%;border-collapse:collapse;font-size:11px;min-width:380px}
+.rtable th{background:var(--p);color:white;padding:9px 11px;text-align:left;font-weight:600;font-size:10px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.rtable td{padding:9px 11px;border-bottom:1px solid #f5f0ff;font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.rtable tr:last-child td{border-bottom:none}.rtable tbody tr:hover td{background:#faf7ff}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.badge.ok{background:var(--gp);color:var(--g)}.badge.warn{background:var(--ap);color:var(--a)}.badge.err{background:var(--rp);color:var(--r)}
 
-/* ── KPI GRID ── */
-.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.kpi-card{
-  background:white;border:1px solid var(--border);border-radius:12px;
-  padding:14px;text-align:center;
-}
-.kpi-val{font-size:24px;font-weight:700;color:var(--purple);line-height:1.1}
-.kpi-label{font-size:10px;color:var(--subtle);margin-top:3px;font-weight:500}
+/* ─── NOTIF ─── */
+.notif{display:flex;align-items:flex-start;gap:10px;background:var(--gp);border:1px solid var(--gb);border-radius:13px;padding:13px 14px;font-size:13px;color:var(--g)}
 
-/* ── NOTIF ── */
-.notif-bar{
-  display:flex;align-items:flex-start;gap:10px;
-  background:var(--green-pale);border:1px solid var(--green-border);
-  border-radius:12px;padding:13px 14px;font-size:13px;color:var(--green);
-}
-.notif-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+/* ─── KPI ─── */
+.kgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.kcard{background:white;border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center}
+.kval{font-size:24px;font-weight:700;color:var(--p);line-height:1.1}
+.klbl{font-size:10px;color:var(--subtle);margin-top:3px;font-weight:500}
 
-/* ── DASH ── */
-.dash-wrap{background:#f5f3ff;border-radius:14px;padding:14px}
-.dash-header{
-  background:linear-gradient(135deg,var(--purple-d),var(--purple));
-  color:white;border-radius:12px;padding:14px 16px;margin-bottom:10px;
-}
-.dash-title{font-size:14px;font-weight:700}
-.dash-sub{font-size:11px;opacity:.6;margin-top:2px}
-.dash-live{
-  display:inline-flex;align-items:center;gap:5px;
-  background:rgba(255,255,255,.15);color:white;
-  padding:3px 10px;border-radius:20px;font-size:11px;margin-top:8px;font-weight:500;
-}
+/* ─── DASH ─── */
+.dash{background:#f5f2ff;border-radius:14px;padding:14px}
+.dhead{background:linear-gradient(135deg,var(--pd),var(--p));color:white;border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.dtitle{font-size:14px;font-weight:700}.dsub{font-size:11px;opacity:.55;margin-top:2px}
+.dlive{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);color:white;padding:3px 10px;border-radius:20px;font-size:11px;margin-top:8px;font-weight:500}
+.dbtn{font-size:12px;border-radius:9px;padding:10px 16px;font-family:'Space Grotesk',sans-serif;font-weight:600;cursor:pointer;white-space:nowrap}
 
-/* ── PLANS ── */
-.plans-section{
-  background:linear-gradient(160deg,var(--purple-d) 0%,var(--purple) 100%);
-  border-radius:20px;padding:28px 22px;margin-top:12px;
+/* ─── PLANS ─── */
+.plans-wrap{
+  background:linear-gradient(170deg,var(--pd) 0%,var(--p) 100%);
+  padding:28px 20px 32px;
 }
-.plans-header{text-align:center;margin-bottom:24px}
-.plans-title{font-size:22px;font-weight:700;color:white;letter-spacing:-.01em;margin-bottom:8px}
-.plans-sub{font-size:13px;color:rgba(255,255,255,.6);line-height:1.6}
-.plans-grid{display:flex;flex-direction:column;gap:12px}
-.plan-card{
-  background:rgba(255,255,255,.09);
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:16px;padding:20px;
-  display:flex;flex-direction:column;gap:12px;
-}
-.plan-card.featured{
-  background:rgba(255,255,255,.17);
-  border:1.5px solid rgba(255,255,255,.55);
-  box-shadow:0 0 0 4px rgba(255,255,255,.06);
-}
-.plan-tag{
-  display:inline-block;background:rgba(255,255,255,.18);color:rgba(255,255,255,.9);
-  font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;
-  width:fit-content;letter-spacing:.06em;text-transform:uppercase;
-}
-.plan-name{font-size:20px;font-weight:700;color:white;letter-spacing:-.01em}
-.plan-features{list-style:none;display:flex;flex-direction:column;gap:8px}
-.plan-features li{font-size:12px;color:rgba(255,255,255,.82);display:flex;gap:8px;align-items:flex-start;line-height:1.5}
-.plan-check{color:#86efac;flex-shrink:0;font-weight:700}
-.plan-price{font-size:21px;font-weight:700;color:white;letter-spacing:-.01em}
-.plan-hint{font-size:11px;color:rgba(255,255,255,.45)}
-.plan-cta{
-  display:block;background:white;color:var(--purple);
-  font-weight:700;font-size:13px;text-align:center;
-  padding:11px;border-radius:10px;text-decoration:none;
-  font-family:'Space Grotesk',sans-serif;letter-spacing:.01em;
-  transition:opacity .15s;
-}
-.plan-cta:active{opacity:.85}
+.plans-hed{text-align:center;margin-bottom:22px}
+.plans-title{font-size:22px;font-weight:700;color:white;letter-spacing:-.02em;margin-bottom:8px}
+.plans-sub{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6}
+.pgrid{display:flex;flex-direction:column;gap:12px}
+.pcard{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.pcard.hot{background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.5);box-shadow:0 0 0 4px rgba(255,255,255,.05)}
+.ptag{display:inline-block;background:rgba(255,255,255,.18);color:rgba(255,255,255,.88);font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;width:fit-content;letter-spacing:.06em;text-transform:uppercase}
+.pname{font-size:20px;font-weight:700;color:white;letter-spacing:-.01em}
+.pfeats{list-style:none;display:flex;flex-direction:column;gap:8px}
+.pfeats li{font-size:12px;color:rgba(255,255,255,.78);display:flex;gap:8px;align-items:flex-start;line-height:1.55}
+.pcheck{color:#86efac;flex-shrink:0;font-weight:700}
+.pprice{font-size:21px;font-weight:700;color:white;letter-spacing:-.01em}
+.phint{font-size:11px;color:rgba(255,255,255,.38)}
+.pcta{display:block;background:white;color:var(--p);font-weight:700;font-size:13px;text-align:center;padding:11px;border-radius:11px;text-decoration:none;font-family:'Space Grotesk',sans-serif;transition:opacity .15s}
+.pcta:active{opacity:.82}
 
-/* ── FOOTER ── */
-.footer{
-  text-align:center;padding:32px 20px 8px;
-  font-size:12px;color:var(--subtle);
+/* ─── FLOATING NAV ─── */
+.nav-float{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  padding:12px 24px calc(env(safe-area-inset-bottom,0px) + 12px);
+  background:rgba(15,10,30,.85);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-top:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
 }
-.footer a{color:var(--purple-l);text-decoration:none;font-weight:600}
+.nav-btn{
+  min-height:48px;min-width:48px;padding:0 22px;
+  font-size:14px;font-weight:600;
+  font-family:'Space Grotesk',sans-serif;
+  border-radius:14px;border:none;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-appearance:none;appearance:none;
+  transition:opacity .15s,transform .1s,background .2s;
+  user-select:none;-webkit-user-select:none;
+}
+.nav-btn:active{opacity:.75;transform:scale(.95)}
+.nav-btn:disabled{opacity:.25;pointer-events:none}
+.nav-prev{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.12)}
+.nav-next{background:var(--pl);color:white;box-shadow:0 4px 20px rgba(107,75,199,.5);padding:0 28px}
+.nav-counter{font-size:12px;color:rgba(255,255,255,.35);text-align:center;flex:1;pointer-events:none;letter-spacing:.04em;font-weight:500}
 
-/* ── DESKTOP ── */
-@media(min-width:600px){
-  body{padding-bottom:80px}
-  .page{padding:0 24px}
-  .scard{padding:28px}
-  .sec-title{font-size:20px}
-  .screen-row{flex-direction:row;align-items:flex-start}
-  .screen-row .terminal{flex:1}
-  .screen-row .file-list{flex:0 0 210px}
-  .norm-wrap{flex-direction:row;align-items:center}
-  .norm-box{flex:1}
-  .norm-arrow{transform:rotate(0);font-size:24px;padding:0 6px;margin:0}
-  .kpi-grid{grid-template-columns:repeat(4,1fr)}
-  .plans-grid{flex-direction:row}
-  .plan-card{flex:1}
-  .hero{padding:80px 32px 68px;border-radius:0 0 40px 40px}
-  .hero-metrics{grid-template-columns:repeat(4,1fr)}
+/* ─── DESKTOP ─── */
+@media(min-width:580px){
+  .hero{padding:72px 40px 64px}
+  .hero-metrics{grid-template-columns:repeat(4,1fr);max-width:520px}
+  .step-card{padding:32px 28px}
+  .srow{flex-direction:row;align-items:flex-start}
+  .srow .term{flex:1}
+  .srow .flist{flex:0 0 210px}
+  .nwrap{flex-direction:row;align-items:center}
+  .nbox{flex:1}
+  .narr{transform:rotate(0);font-size:26px;padding:0 8px}
+  .kgrid{grid-template-columns:repeat(4,1fr)}
+  .pgrid{flex-direction:row}
+  .pcard{flex:1}
+  .nav-btn{min-width:110px}
 }
 </style>
 </head>
 <body>
 
-<div id="scroll-prog"></div>
-
-<!-- STICKY HEADER -->
-<header class="header">
+<!-- TOPBAR -->
+<header class="topbar">
   <div class="brand">
     <div class="brand-icon">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
@@ -415,424 +331,417 @@ body{
       <div class="brand-sub">Suite de Conciliaciones</div>
     </div>
   </div>
-  <span class="header-tag">RPA · IA</span>
+  <span class="topbar-badge">RPA · IA</span>
 </header>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-orb hero-orb-1"></div>
-  <div class="hero-orb hero-orb-2"></div>
-  <div class="hero-inner">
-    <div class="hero-eyebrow">
-      <span class="hero-eyebrow-dot"></span>
-      GlobalTI · Suite de Conciliaciones
-    </div>
-    <h1 class="hero-title">¿Cómo trabaja<br>nuestro <span>robot</span>?</h1>
-    <p class="hero-sub">Del extracto bancario al reporte de tesorería — sin una sola intervención humana.</p>
-    <div class="hero-chips">
-      <span class="hero-chip">RPA + IA</span>
-      <span class="hero-chip">100% automático</span>
-      <span class="hero-chip">Multi-banco</span>
-      <span class="hero-chip">Multi-procesadora</span>
-    </div>
-    <div class="hero-metrics">
-      <div class="hero-metric">
-        <div class="hero-metric-val">89<span>%</span></div>
-        <div class="hero-metric-label">Match automático</div>
-      </div>
-      <div class="hero-metric">
-        <div class="hero-metric-val">4<span>min</span></div>
-        <div class="hero-metric-label">Tiempo total</div>
-      </div>
-      <div class="hero-metric">
-        <div class="hero-metric-val">11k<span>+</span></div>
-        <div class="hero-metric-label">Registros por ciclo</div>
-      </div>
-      <div class="hero-metric">
-        <div class="hero-metric-val">24<span>/7</span></div>
-        <div class="hero-metric-label">Operación continua</div>
-      </div>
-    </div>
-    <div class="hero-scroll-hint">
-      <span class="hero-scroll-arrow">↓</span>
-      Scrolleá para ver el flujo completo
-    </div>
-  </div>
-</div>
+<!-- PROGRESS -->
+<div class="progress-track" id="prog-bar"></div>
 
-<!-- CONTENT -->
-<div class="page">
+<!-- SLIDES -->
+<div class="slides">
 
-  <!-- PASO 1 -->
-  <div class="step-connector">
-    <div class="step-line"></div>
-    <div class="step-num">1</div>
-    <div class="step-line"></div>
-  </div>
-  <div class="scard">
-    <div class="sec-badge">Paso 1 de 6 · Extracción bancaria</div>
-    <div class="sec-title">El robot accede al homebanking</div>
-    <div class="sec-sub">Abre el navegador, navega al portal del banco e inicia sesión automáticamente. Descarga el extracto del período seleccionado — sin ninguna intervención humana.</div>
-    <div class="robot-bar">
-      <div class="r-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M12 2a4 4 0 014 4v2h2a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V10a2 2 0 012-2h2V6a4 4 0 014-4zm0 2a2 2 0 00-2 2v2h4V6a2 2 0 00-2-2zm-4 9a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0zm5.5 0a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0z"/></svg></div>
-      <span><span class="live-dot"></span> Iniciando sesión en Ueno Bank homebanking...</span>
-    </div>
-    <div class="screen-row">
-      <div class="terminal">
-        <div class="t-bar">
-          <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
-          <span class="t-url">homebanking.uenobank.com.py/extractos</span>
+  <!-- SLIDE 0 — HERO -->
+  <div class="slide active" id="slide-0">
+    <div class="hero">
+      <div class="orb orb-a"></div><div class="orb orb-b"></div><div class="orb orb-c"></div>
+      <div class="hero-inner">
+        <div class="hero-pill"><span class="live-green"></span>GlobalTI · Suite de Conciliaciones</div>
+        <h1 class="hero-title">¿Cómo trabaja<br>nuestro <em>robot</em>?</h1>
+        <p class="hero-desc">Del extracto bancario al reporte de tesorería — en forma 100% automática, sin ninguna intervención humana.</p>
+        <div class="hero-metrics">
+          <div class="metric"><div class="metric-val">89<sup>%</sup></div><div class="metric-lbl">Match automático</div></div>
+          <div class="metric"><div class="metric-val">4<sup>min</sup></div><div class="metric-lbl">Tiempo total</div></div>
+          <div class="metric"><div class="metric-val">11k<sup>+</sup></div><div class="metric-lbl">Registros / ciclo</div></div>
+          <div class="metric"><div class="metric-val">24<sup>/7</sup></div><div class="metric-lbl">Operación continua</div></div>
         </div>
-        <div class="t-body">
-          <span class="tc">POST</span> /api/auth → <span class="tg">200 OK</span><br>
-          <span class="tw">Sesión iniciada ✓</span><br><br>
-          <span class="tc">GET</span> /extracto<br>
-          &nbsp;&nbsp;desde=<span class="ta">2024-03-01</span><br>
-          &nbsp;&nbsp;hasta=<span class="ta">2024-03-31</span><br>
-          &nbsp;&nbsp;cuenta=<span class="ta">0012345-1</span><br><br>
-          <span class="tg">✓ Descargando extracto...</span><br>
-          <span class="tg">✓ extracto_ueno_mar24.xlsx</span><br>
-          &nbsp;&nbsp;<span class="ta">→ 1.247 registros · 3.2 MB</span>
-        </div>
-      </div>
-      <div class="file-list">
-        <div class="file-item hi">
-          <span class="file-emoji">📊</span>
-          <div><div class="file-name">extracto_ueno_mar24.xlsx</div><div class="file-meta">1.247 movimientos · 3.2 MB</div></div>
-        </div>
-        <div class="file-item dim">
-          <span class="file-emoji">💳</span>
-          <div><div class="file-name">Procesadoras</div><div class="file-meta">Siguiente paso...</div></div>
-        </div>
-        <div class="file-item dim">
-          <span class="file-emoji">📒</span>
-          <div><div class="file-name">ERP</div><div class="file-meta">Siguiente paso...</div></div>
-        </div>
+        <div class="hero-hint">6 pasos · tocá Siguiente para recorrerlos →</div>
       </div>
     </div>
   </div>
 
-  <!-- PASO 2 -->
-  <div class="step-connector">
-    <div class="step-line"></div>
-    <div class="step-num">2</div>
-    <div class="step-line"></div>
-  </div>
-  <div class="scard">
-    <div class="sec-badge">Paso 2 de 6 · Procesadoras de pago</div>
-    <div class="sec-title">Descarga reportes de Bancard, Upay y Procard</div>
-    <div class="sec-sub">El robot accede a cada portal de procesadora de pago y descarga los reportes de liquidaciones del mismo período en forma paralela.</div>
-    <div class="robot-bar">
-      <div class="r-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M12 2a4 4 0 014 4v2h2a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V10a2 2 0 012-2h2V6a4 4 0 014-4zm0 2a2 2 0 00-2 2v2h4V6a2 2 0 00-2-2zm-4 9a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0zm5.5 0a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0z"/></svg></div>
-      <span><span class="live-dot"></span> Conectando a portal Bancard...</span>
-    </div>
-    <div class="screen-row">
-      <div class="terminal">
-        <div class="t-bar">
-          <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
-          <span class="t-url">comercios.bancard.com.py/reportes</span>
-        </div>
-        <div class="t-body">
-          <span class="tc">POST</span> /login → <span class="tg">200 OK</span><br>
-          <span class="tw">Acceso autorizado ✓</span><br><br>
-          <span class="tc">GET</span> /liquidaciones?periodo=<span class="ta">202403</span><br><br>
-          <span class="tg">✓ bancard_liq_mar24.csv</span><br>
-          &nbsp;&nbsp;<span class="ta">→ 3.891 transacciones</span><br><br>
-          <span class="tc">TAMBIÉN:</span> <span class="ta">Upay</span> + <span class="ta">Procard</span><br>
-          &nbsp;&nbsp;<span class="ta">→ 892 registros adicionales</span>
-        </div>
-      </div>
-      <div class="file-list">
-        <div class="file-item dim">
-          <span class="file-emoji">📊</span>
-          <div><div class="file-name">extracto_ueno_mar24.xlsx</div><div class="file-meta">✓ Listo</div></div>
-        </div>
-        <div class="file-item hi">
-          <span class="file-emoji">💳</span>
-          <div><div class="file-name">bancard_liq_mar24.csv</div><div class="file-meta">3.891 transacciones</div></div>
-        </div>
-        <div class="file-item hi">
-          <span class="file-emoji">💳</span>
-          <div><div class="file-name">upay_procard_mar24.csv</div><div class="file-meta">892 registros</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PASO 3 -->
-  <div class="step-connector">
-    <div class="step-line"></div>
-    <div class="step-num">3</div>
-    <div class="step-line"></div>
-  </div>
-  <div class="scard">
-    <div class="sec-badge">Paso 3 de 6 · Datos contables</div>
-    <div class="sec-title">Exporta datos contables del ERP</div>
-    <div class="sec-sub">El robot accede al ERP y exporta el libro mayor o el reporte de caja y puntos de venta — según el tipo de conciliación requerida.</div>
-    <div class="tab-row" style="margin-top:4px">
-      <button class="tab-btn on" id="tab-lm" onclick="switchTab('lm')">📒 Libro Mayor</button>
-      <button class="tab-btn off" id="tab-caja" onclick="switchTab('caja')">🏪 Caja / POS</button>
-    </div>
-    <div id="panel-lm" style="display:flex;flex-direction:column;gap:12px">
-      <div class="robot-bar">
-        <div class="r-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M12 2a4 4 0 014 4v2h2a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V10a2 2 0 012-2h2V6a4 4 0 014-4zm0 2a2 2 0 00-2 2v2h4V6a2 2 0 00-2-2zm-4 9a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0zm5.5 0a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0z"/></svg></div>
-        <span><span class="live-dot"></span> Exportando libro mayor desde ERP...</span>
-      </div>
-      <div class="screen-row">
-        <div class="terminal">
-          <div class="t-bar">
-            <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
-            <span class="t-url">erp.empresa.com.py/contabilidad</span>
+  <!-- SLIDE 1 -->
+  <div class="slide" id="slide-1">
+    <div class="content">
+      <div class="step-card">
+        <div class="step-label">Paso 1 de 6 · Extracción bancaria</div>
+        <div class="step-title">El robot accede al homebanking</div>
+        <div class="step-sub">Abre el navegador, navega al portal del banco e inicia sesión automáticamente. Descarga el extracto del período sin ninguna intervención humana.</div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+          <div class="rbar">
+            <div class="ricon"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M12 2a4 4 0 014 4v2h2a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V10a2 2 0 012-2h2V6a4 4 0 014-4zm0 2a2 2 0 00-2 2v2h4V6a2 2 0 00-2-2zm-4 9a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0zm5.5 0a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0z"/></svg></div>
+            <span><span class="live"></span> Iniciando sesión en Ueno Bank homebanking...</span>
           </div>
-          <div class="t-body">
-            <span class="tc">Módulo:</span> <span class="tw">Contabilidad General</span><br>
-            <span class="tc">Reporte:</span> <span class="ta">Libro Mayor</span><br><br>
-            Cuenta: <span class="ta">1.1.01 Bancos</span><br>
-            Período: <span class="ta">01/03 – 31/03/24</span><br><br>
-            <span class="tg">✓ libro_mayor_mar24.xlsx</span><br>
-            &nbsp;&nbsp;<span class="ta">→ 5.030 asientos contables</span>
+          <div class="srow">
+            <div class="term">
+              <div class="tbar"><div class="td r"></div><div class="td y"></div><div class="td g"></div><span class="turl">homebanking.uenobank.com.py/extractos</span></div>
+              <div class="tbody">
+                <span class="kb">POST</span> /api/auth → <span class="kg">200 OK</span><br>
+                <span class="kw">Sesión iniciada ✓</span><br><br>
+                <span class="kb">GET</span> /extracto<br>
+                &nbsp;&nbsp;desde=<span class="ka">2024-03-01</span><br>
+                &nbsp;&nbsp;hasta=<span class="ka">2024-03-31</span><br>
+                &nbsp;&nbsp;cuenta=<span class="ka">0012345-1</span><br><br>
+                <span class="kg">✓ extracto_ueno_mar24.xlsx</span><br>
+                &nbsp;&nbsp;<span class="ka">→ 1.247 registros · 3.2 MB</span>
+              </div>
+            </div>
+            <div class="flist">
+              <div class="fitem hi"><span class="femoji">📊</span><div><div class="fname">extracto_ueno_mar24.xlsx</div><div class="fmeta">1.247 movimientos · 3.2 MB</div></div></div>
+              <div class="fitem dim"><span class="femoji">💳</span><div><div class="fname">Procesadoras</div><div class="fmeta">Siguiente paso...</div></div></div>
+              <div class="fitem dim"><span class="femoji">📒</span><div><div class="fname">ERP</div><div class="fmeta">Siguiente paso...</div></div></div>
+            </div>
           </div>
         </div>
-        <div class="file-list">
-          <div class="file-item dim"><span class="file-emoji">📊</span><div><div class="file-name">extracto_ueno_mar24.xlsx</div><div class="file-meta">✓ Listo</div></div></div>
-          <div class="file-item dim"><span class="file-emoji">💳</span><div><div class="file-name">bancard + upay_mar24.csv</div><div class="file-meta">✓ Listo</div></div></div>
-          <div class="file-item hi"><span class="file-emoji">📒</span><div><div class="file-name">libro_mayor_mar24.xlsx</div><div class="file-meta">5.030 asientos · ERP</div></div></div>
-        </div>
       </div>
     </div>
-    <div id="panel-caja" style="display:none;flex-direction:column;gap:12px">
-      <div class="robot-bar" style="background:#fffbeb;border-color:#fde68a;color:#92400e">
-        <div class="r-icon" style="background:#b45309"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M4 4h16a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1zm1 5h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V9zm4 3v2h6v-2H9z"/></svg></div>
-        <span><span class="live-dot" style="background:#f59e0b"></span> Exportando cierre de cajas y ventas POS...</span>
-      </div>
-      <div class="screen-row">
-        <div class="terminal">
-          <div class="t-bar">
-            <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
-            <span class="t-url">erp.empresa.com.py/ventas/caja</span>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide" id="slide-2">
+    <div class="content">
+      <div class="step-card">
+        <div class="step-label">Paso 2 de 6 · Procesadoras de pago</div>
+        <div class="step-title">Descarga reportes de Bancard, Upay y Procard</div>
+        <div class="step-sub">Accede a cada portal de procesadora de pago y descarga los reportes de liquidaciones del mismo período en forma automática.</div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+          <div class="rbar">
+            <div class="ricon"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M12 2a4 4 0 014 4v2h2a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V10a2 2 0 012-2h2V6a4 4 0 014-4zm0 2a2 2 0 00-2 2v2h4V6a2 2 0 00-2-2zm-4 9a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0zm5.5 0a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0z"/></svg></div>
+            <span><span class="live"></span> Conectando a portal Bancard...</span>
           </div>
-          <div class="t-body">
-            <span class="tc">Módulo:</span> <span class="tw">Punto de Venta / Caja</span><br>
-            <span class="tc">Reporte:</span> <span class="ta">Cierre de Cajas</span><br><br>
-            Terminales: <span class="ta">POS-01 al POS-12</span><br>
-            Período: <span class="ta">01/03 – 31/03/24</span><br><br>
-            <span class="tg">✓ caja_pos_mar24.xlsx</span><br>
-            &nbsp;&nbsp;<span class="ta">→ 8.420 transacciones POS</span>
+          <div class="srow">
+            <div class="term">
+              <div class="tbar"><div class="td r"></div><div class="td y"></div><div class="td g"></div><span class="turl">comercios.bancard.com.py/reportes</span></div>
+              <div class="tbody">
+                <span class="kb">POST</span> /login → <span class="kg">200 OK</span><br>
+                <span class="kw">Acceso autorizado ✓</span><br><br>
+                <span class="kb">GET</span> /liquidaciones?periodo=<span class="ka">202403</span><br><br>
+                <span class="kg">✓ bancard_liq_mar24.csv</span><br>
+                &nbsp;&nbsp;<span class="ka">→ 3.891 transacciones</span><br><br>
+                <span class="kb">TAMBIÉN:</span> <span class="ka">Upay + Procard</span><br>
+                &nbsp;&nbsp;<span class="ka">→ 892 registros adicionales</span>
+              </div>
+            </div>
+            <div class="flist">
+              <div class="fitem dim"><span class="femoji">📊</span><div><div class="fname">extracto_ueno_mar24.xlsx</div><div class="fmeta">✓ Listo</div></div></div>
+              <div class="fitem hi"><span class="femoji">💳</span><div><div class="fname">bancard_liq_mar24.csv</div><div class="fmeta">3.891 transacciones</div></div></div>
+              <div class="fitem hi"><span class="femoji">💳</span><div><div class="fname">upay_procard_mar24.csv</div><div class="fmeta">892 registros</div></div></div>
+            </div>
           </div>
         </div>
-        <div class="file-list">
-          <div class="file-item dim"><span class="file-emoji">📊</span><div><div class="file-name">extracto_ueno_mar24.xlsx</div><div class="file-meta">✓ Listo</div></div></div>
-          <div class="file-item dim"><span class="file-emoji">💳</span><div><div class="file-name">bancard + upay_mar24.csv</div><div class="file-meta">✓ Listo</div></div></div>
-          <div class="file-item" style="border-color:#b45309;background:#fffbeb"><span class="file-emoji">🏪</span><div><div class="file-name">caja_pos_mar24.xlsx</div><div class="file-meta">8.420 · 12 terminales POS</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide" id="slide-3">
+    <div class="content">
+      <div class="step-card">
+        <div class="step-label">Paso 3 de 6 · Datos contables</div>
+        <div class="step-title">Exporta datos contables del ERP</div>
+        <div class="step-sub">El robot exporta el libro mayor o el reporte de caja y POS — según el tipo de conciliación que necesites.</div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+          <div class="tabs">
+            <button class="tbtn on" id="tab-lm" onclick="switchTab('lm')">📒 Libro Mayor</button>
+            <button class="tbtn off" id="tab-caja" onclick="switchTab('caja')">🏪 Caja / POS</button>
+          </div>
+          <div id="panel-lm" style="display:flex;flex-direction:column;gap:12px">
+            <div class="rbar">
+              <div class="ricon"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M12 2a4 4 0 014 4v2h2a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V10a2 2 0 012-2h2V6a4 4 0 014-4zm0 2a2 2 0 00-2 2v2h4V6a2 2 0 00-2-2zm-4 9a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0zm5.5 0a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0z"/></svg></div>
+              <span><span class="live"></span> Exportando libro mayor del ERP...</span>
+            </div>
+            <div class="srow">
+              <div class="term">
+                <div class="tbar"><div class="td r"></div><div class="td y"></div><div class="td g"></div><span class="turl">erp.empresa.com.py/contabilidad</span></div>
+                <div class="tbody">
+                  <span class="kb">Módulo:</span> <span class="kw">Contabilidad General</span><br>
+                  <span class="kb">Reporte:</span> <span class="ka">Libro Mayor</span><br><br>
+                  Cuenta: <span class="ka">1.1.01 Bancos</span><br>
+                  Período: <span class="ka">01/03–31/03/24</span><br><br>
+                  <span class="kg">✓ libro_mayor_mar24.xlsx</span><br>
+                  &nbsp;&nbsp;<span class="ka">→ 5.030 asientos contables</span>
+                </div>
+              </div>
+              <div class="flist">
+                <div class="fitem dim"><span class="femoji">📊</span><div><div class="fname">extracto_ueno_mar24.xlsx</div><div class="fmeta">✓ Listo</div></div></div>
+                <div class="fitem dim"><span class="femoji">💳</span><div><div class="fname">bancard + upay_mar24.csv</div><div class="fmeta">✓ Listo</div></div></div>
+                <div class="fitem hi"><span class="femoji">📒</span><div><div class="fname">libro_mayor_mar24.xlsx</div><div class="fmeta">5.030 asientos · ERP</div></div></div>
+              </div>
+            </div>
+          </div>
+          <div id="panel-caja" style="display:none;flex-direction:column;gap:12px">
+            <div class="rbar" style="background:#fffbeb;border-color:#fde68a;color:#92400e">
+              <div class="ricon" style="background:#b45309"><svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M4 4h16a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1zm1 5h14v10a1 1 0 01-1 1H5a1 1 0 01-1-1V9zm4 3v2h6v-2H9z"/></svg></div>
+              <span><span class="live" style="background:#f59e0b"></span> Exportando cierre de cajas y ventas POS...</span>
+            </div>
+            <div class="srow">
+              <div class="term">
+                <div class="tbar"><div class="td r"></div><div class="td y"></div><div class="td g"></div><span class="turl">erp.empresa.com.py/ventas/caja</span></div>
+                <div class="tbody">
+                  <span class="kb">Módulo:</span> <span class="kw">Punto de Venta / Caja</span><br>
+                  <span class="kb">Reporte:</span> <span class="ka">Cierre de Cajas</span><br><br>
+                  Terminales: <span class="ka">POS-01 al POS-12</span><br>
+                  Período: <span class="ka">01/03–31/03/24</span><br><br>
+                  <span class="kg">✓ caja_pos_mar24.xlsx</span><br>
+                  &nbsp;&nbsp;<span class="ka">→ 8.420 transacciones POS</span>
+                </div>
+              </div>
+              <div class="flist">
+                <div class="fitem dim"><span class="femoji">📊</span><div><div class="fname">extracto_ueno_mar24.xlsx</div><div class="fmeta">✓ Listo</div></div></div>
+                <div class="fitem dim"><span class="femoji">💳</span><div><div class="fname">bancard + upay_mar24.csv</div><div class="fmeta">✓ Listo</div></div></div>
+                <div class="fitem" style="border-color:#b45309;background:#fffbeb"><span class="femoji">🏪</span><div><div class="fname">caja_pos_mar24.xlsx</div><div class="fmeta">8.420 · 12 terminales POS</div></div></div>
+              </div>
+            </div>
+            <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:12px 14px;font-size:12px;color:#78350f;display:flex;gap:8px;align-items:flex-start;line-height:1.65">
+              <span style="font-size:15px;flex-shrink:0">💡</span>
+              <span>Concilia ventas en efectivo y tarjeta por sucursal contra acreditaciones bancarias — detecta faltantes y sobrantes por terminal.</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:11px;padding:12px 14px;font-size:12px;color:#78350f;display:flex;gap:9px;align-items:flex-start;line-height:1.6">
-        <span style="font-size:16px;flex-shrink:0">💡</span>
-        <span>Concilia ventas en efectivo y tarjeta por sucursal contra acreditaciones bancarias — detecta faltantes y sobrantes por terminal.</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide" id="slide-4">
+    <div class="content">
+      <div class="step-card">
+        <div class="step-label">Paso 4 de 6 · Normalización e inteligencia</div>
+        <div class="step-title">Normaliza y aplica reglas de negocio</div>
+        <div class="step-sub">Unifica los tres formatos distintos en un estándar único y aplica las reglas definidas con tu equipo contable para el matching automático.</div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+          <div class="nwrap">
+            <div class="nbox">
+              <div class="nlbl">Antes — 3 formatos distintos</div>
+              <div class="nrow"><span class="nc">dd/mm/yyyy</span><span class="nc">monto</span></div>
+              <div class="nrow"><span class="nc">fecha_tx</span><span class="nc">importe</span></div>
+              <div class="nrow"><span class="nc">FECHA</span><span class="nc">MONTO_GS</span></div>
+            </div>
+            <div class="narr">→</div>
+            <div class="nbox after">
+              <div class="nlbl">Después — formato único</div>
+              <div class="nrow"><span class="nc hi">fecha</span><span class="nc hi">monto</span></div>
+              <div class="nrow"><span class="nc hi">2024-03-15</span><span class="nc hi">150000</span></div>
+              <div class="nrow"><span class="nc hi">2024-03-15</span><span class="nc hi">150000</span></div>
+            </div>
+          </div>
+          <div class="rules">
+            <div class="rule"><div class="rnum">R1</div><div class="rtxt">Si <strong>fecha banco</strong> = <strong>fecha procesadora</strong> ± 1 día y monto coincide → <strong>match automático</strong></div></div>
+            <div class="rule"><div class="rnum">R2</div><div class="rtxt">Diferencias por <strong>comisiones o impuestos</strong> dentro del rango permitido → <strong>match con observación</strong></div></div>
+            <div class="rule"><div class="rnum">R3</div><div class="rtxt">Sin contraparte en 48 hs → marcado como <strong>no conciliado para revisión manual</strong></div></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- PASO 4 -->
-  <div class="step-connector">
-    <div class="step-line"></div>
-    <div class="step-num">4</div>
-    <div class="step-line"></div>
-  </div>
-  <div class="scard">
-    <div class="sec-badge">Paso 4 de 6 · Normalización e inteligencia</div>
-    <div class="sec-title">Normaliza y aplica reglas de negocio</div>
-    <div class="sec-sub">Unifica los tres formatos distintos en un estándar único, luego aplica las reglas definidas con tu equipo contable para el matching automático.</div>
-    <div class="norm-wrap">
-      <div class="norm-box">
-        <div class="norm-label">Antes — 3 formatos distintos</div>
-        <div class="norm-row"><span class="nc">dd/mm/yyyy</span><span class="nc">monto</span></div>
-        <div class="norm-row"><span class="nc">fecha_tx</span><span class="nc">importe</span></div>
-        <div class="norm-row"><span class="nc">FECHA</span><span class="nc">MONTO_GS</span></div>
-      </div>
-      <div class="norm-arrow">→</div>
-      <div class="norm-box after">
-        <div class="norm-label">Después — formato único</div>
-        <div class="norm-row"><span class="nc hi">fecha</span><span class="nc hi">monto</span></div>
-        <div class="norm-row"><span class="nc hi">2024-03-15</span><span class="nc hi">150000</span></div>
-        <div class="norm-row"><span class="nc hi">2024-03-15</span><span class="nc hi">150000</span></div>
-      </div>
-    </div>
-    <div class="rules">
-      <div class="rule-item">
-        <div class="rule-num">R1</div>
-        <div class="rule-text">Si <strong>fecha banco</strong> = <strong>fecha procesadora</strong> ± 1 día y monto coincide → <strong>match automático</strong></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">R2</div>
-        <div class="rule-text">Diferencias por <strong>comisiones o impuestos</strong> dentro del rango permitido → <strong>match con observación</strong></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">R3</div>
-        <div class="rule-text">Sin contraparte en 48 hs → marcado como <strong>no conciliado para revisión manual</strong></div>
+  <!-- SLIDE 5 -->
+  <div class="slide" id="slide-5">
+    <div class="content">
+      <div class="step-card">
+        <div class="step-label">Paso 5 de 6 · Output</div>
+        <div class="step-title">Genera el Excel de resultados</div>
+        <div class="step-sub">Todos los movimientos clasificados en un único archivo con tres hojas — listo para auditoría o revisión del contador.</div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+          <div class="fitem hi"><span class="femoji">📗</span><div><div class="fname">conciliacion_mar24_FINAL.xlsx</div><div class="fmeta">11.060 registros procesados · 3 hojas</div></div></div>
+          <div class="stats">
+            <div class="schip ok"><div class="sval">89%</div><div class="slbl">Conciliado</div></div>
+            <div class="schip err"><div class="sval">7%</div><div class="slbl">No conciliado</div></div>
+            <div class="schip warn"><div class="sval">4%</div><div class="slbl">Pendiente</div></div>
+          </div>
+          <div class="twrap">
+            <table class="rtable">
+              <thead><tr><th>Fecha</th><th>Concepto</th><th>Banco</th><th>Procesadora</th><th>Estado</th></tr></thead>
+              <tbody>
+                <tr><td>15/03</td><td>Venta tarjeta #4821</td><td>150.000</td><td>150.000</td><td><span class="badge ok">✓ Conciliado</span></td></tr>
+                <tr><td>15/03</td><td>Liq. Bancard marzo</td><td>2.340.000</td><td>2.340.000</td><td><span class="badge ok">✓ Conciliado</span></td></tr>
+                <tr><td>16/03</td><td>Venta POS #0093</td><td>78.500</td><td>75.200</td><td><span class="badge warn">⚠ Pendiente</span></td></tr>
+                <tr><td>17/03</td><td>Depósito #887232</td><td>500.000</td><td>—</td><td><span class="badge err">✗ No conciliado</span></td></tr>
+                <tr><td>18/03</td><td>Com. Pago Móvil</td><td>12.000</td><td>12.000</td><td><span class="badge ok">✓ Conciliado</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- PASO 5 -->
-  <div class="step-connector">
-    <div class="step-line"></div>
-    <div class="step-num">5</div>
-    <div class="step-line"></div>
-  </div>
-  <div class="scard">
-    <div class="sec-badge">Paso 5 de 6 · Output</div>
-    <div class="sec-title">Genera el Excel de resultados</div>
-    <div class="sec-sub">Todos los movimientos clasificados en un único archivo con tres hojas: conciliados, no conciliados y pendientes — listo para auditoría o revisión del contador.</div>
-    <div class="file-item hi">
-      <span class="file-emoji">📗</span>
-      <div><div class="file-name">conciliacion_mar24_FINAL.xlsx</div><div class="file-meta">11.060 registros procesados · 3 hojas</div></div>
-    </div>
-    <div class="stats-row">
-      <div class="stat-chip ok"><div class="stat-val">89%</div><div class="stat-label">Conciliado</div></div>
-      <div class="stat-chip err"><div class="stat-val">7%</div><div class="stat-label">No conciliado</div></div>
-      <div class="stat-chip warn"><div class="stat-val">4%</div><div class="stat-label">Pendiente</div></div>
-    </div>
-    <div class="table-wrap">
-      <table class="rtable">
-        <thead>
-          <tr><th>Fecha</th><th>Concepto</th><th>Banco</th><th>Procesadora</th><th>Estado</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>15/03</td><td>Venta tarjeta #4821</td><td>150.000</td><td>150.000</td><td><span class="badge ok">✓ Conciliado</span></td></tr>
-          <tr><td>15/03</td><td>Liq. Bancard marzo</td><td>2.340.000</td><td>2.340.000</td><td><span class="badge ok">✓ Conciliado</span></td></tr>
-          <tr><td>16/03</td><td>Venta POS #0093</td><td>78.500</td><td>75.200</td><td><span class="badge warn">⚠ Pendiente</span></td></tr>
-          <tr><td>17/03</td><td>Depósito #887232</td><td>500.000</td><td>—</td><td><span class="badge err">✗ No conciliado</span></td></tr>
-          <tr><td>18/03</td><td>Comisión Pago Móvil</td><td>12.000</td><td>12.000</td><td><span class="badge ok">✓ Conciliado</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- PASO 6 -->
-  <div class="step-connector">
-    <div class="step-line"></div>
-    <div class="step-num">6</div>
-    <div class="step-line"></div>
-  </div>
-  <div class="scard">
-    <div class="sec-badge">Paso 6 de 6 · Resultado final</div>
-    <div class="sec-title">El tesorero ve su panel de control</div>
-    <div class="sec-sub">El robot notifica al equipo de tesorería. Cuando el usuario abre el sistema, ya encuentra todo procesado — lo que antes tomaba horas ahora tarda 4 minutos.</div>
-    <div class="notif-bar">
-      <span class="notif-icon">🔔</span>
-      <div>
-        <strong>Conciliación de Marzo 2024 completada</strong><br>
-        <span style="font-size:12px">11.060 registros · 89% conciliado · 7 ítems para revisión · Tiempo total: 4 min</span>
-      </div>
-    </div>
-    <div class="dash-wrap">
-      <div class="dash-header">
-        <div class="dash-title">Panel de Tesorería — Conciliaciones</div>
-        <div class="dash-sub">Marzo 2024 · Ejecutado hoy a las 06:00 AM</div>
-        <div class="dash-live"><span class="live-dot"></span> En vivo</div>
-      </div>
-      <div class="kpi-grid">
-        <div class="kpi-card"><div class="kpi-val">11.060</div><div class="kpi-label">Registros procesados</div></div>
-        <div class="kpi-card"><div class="kpi-val" style="color:var(--green)">89%</div><div class="kpi-label">Auto-conciliado</div></div>
-        <div class="kpi-card"><div class="kpi-val" style="color:var(--red)">7</div><div class="kpi-label">Para revisión</div></div>
-        <div class="kpi-card"><div class="kpi-val">4 min</div><div class="kpi-label">Tiempo total</div></div>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
-        <button style="background:var(--purple);color:white;border:none;border-radius:9px;padding:10px 16px;font-size:12px;font-weight:600;font-family:'Space Grotesk',sans-serif;cursor:pointer">📥 Descargar Excel</button>
-        <button style="background:white;color:var(--purple);border:1.5px solid var(--purple-mid);border-radius:9px;padding:10px 16px;font-size:12px;font-weight:600;font-family:'Space Grotesk',sans-serif;cursor:pointer">📋 No conciliados (7)</button>
+  <!-- SLIDE 6 -->
+  <div class="slide" id="slide-6">
+    <div class="content">
+      <div class="step-card">
+        <div class="step-label">Paso 6 de 6 · Resultado final</div>
+        <div class="step-title">El tesorero ve su panel de control</div>
+        <div class="step-sub">El robot notifica al equipo. Cuando el usuario abre el sistema, ya encuentra todo procesado — lo que antes tomaba horas ahora tarda 4 minutos.</div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+          <div class="notif">
+            <span style="font-size:18px;flex-shrink:0;margin-top:1px">🔔</span>
+            <div><strong>Conciliación de Marzo 2024 completada</strong><br><span style="font-size:12px">11.060 registros · 89% conciliado · 7 ítems para revisión · 4 minutos</span></div>
+          </div>
+          <div class="dash">
+            <div class="dhead">
+              <div class="dtitle">Panel de Tesorería — Conciliaciones</div>
+              <div class="dsub">Marzo 2024 · Ejecutado hoy a las 06:00 AM</div>
+              <div class="dlive"><span class="live"></span> En vivo</div>
+            </div>
+            <div class="kgrid">
+              <div class="kcard"><div class="kval">11.060</div><div class="klbl">Registros procesados</div></div>
+              <div class="kcard"><div class="kval" style="color:var(--g)">89%</div><div class="klbl">Auto-conciliado</div></div>
+              <div class="kcard"><div class="kval" style="color:var(--r)">7</div><div class="klbl">Para revisión</div></div>
+              <div class="kcard"><div class="kval">4 min</div><div class="klbl">Tiempo total</div></div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+              <button class="dbtn" style="background:var(--p);color:white;border:none">📥 Descargar Excel</button>
+              <button class="dbtn" style="background:white;color:var(--p);border:1.5px solid var(--pm)">📋 No conciliados (7)</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- PLANES -->
-  <div class="plans-section">
-    <div class="plans-header">
-      <div class="plans-title">Elegí el plan para tu operación</div>
-      <div class="plans-sub">Costo fijo mensual · ROI garantizado · Escalable a medida que crecés</div>
-    </div>
-    <div class="plans-grid">
-      <div class="plan-card">
-        <div class="plan-name">Explora</div>
-        <ul class="plan-features">
-          <li><span class="plan-check">✔</span> Hasta 5 entidades (bancos, procesadoras o cobranza)</li>
-          <li><span class="plan-check">✔</span> Soporte 24×7</li>
-          <li><span class="plan-check">✔</span> Tablero de métricas</li>
-        </ul>
-        <div class="plan-price">USD 990 <span style="font-size:13px;opacity:.6">+ IVA / mes</span></div>
-        <div class="plan-hint">Perfecto para dar el primer paso</div>
+  <!-- SLIDE 7 — PLANES -->
+  <div class="slide" id="slide-7">
+    <div class="plans-wrap">
+      <div class="plans-hed">
+        <div class="plans-title">Elegí el plan para tu operación</div>
+        <div class="plans-sub">Costo fijo mensual · ROI garantizado · Escalable según tu crecimiento</div>
       </div>
-      <div class="plan-card featured">
-        <div class="plan-tag">⭐ Más elegido</div>
-        <div class="plan-name" style="margin-top:4px">Impulsa</div>
-        <ul class="plan-features">
-          <li><span class="plan-check">✔</span> Hasta 10 entidades combinadas</li>
-          <li><span class="plan-check">✔</span> Soporte 24×7 prioritario</li>
-          <li><span class="plan-check">✔</span> Tablero de métricas avanzado</li>
-        </ul>
-        <div class="plan-price">USD 1.690 <span style="font-size:13px;opacity:.6">+ IVA / mes</span></div>
-        <div class="plan-hint">Diseñado para escalar y optimizar</div>
-      </div>
-      <div class="plan-card">
-        <div class="plan-tag">✦ Personalizado</div>
-        <div class="plan-name" style="margin-top:4px">A medida</div>
-        <ul class="plan-features">
-          <li><span class="plan-check">✔</span> Entidades ilimitadas</li>
-          <li><span class="plan-check">✔</span> Soporte dedicado + SLA garantizado</li>
-          <li><span class="plan-check">✔</span> Integraciones a la medida</li>
-        </ul>
-        <div class="plan-price" style="font-size:16px">Cotización personalizada</div>
-        <div class="plan-hint" style="margin-bottom:4px">Para operaciones de mayor escala</div>
-        <a href="mailto:ventas@globalti.com.py" class="plan-cta">Hablar con un asesor →</a>
+      <div class="pgrid">
+        <div class="pcard">
+          <div class="pname">Explora</div>
+          <ul class="pfeats">
+            <li><span class="pcheck">✔</span> Hasta 5 entidades (bancos, procesadoras o cobranza)</li>
+            <li><span class="pcheck">✔</span> Soporte 24×7</li>
+            <li><span class="pcheck">✔</span> Tablero de métricas</li>
+          </ul>
+          <div class="pprice">USD 990 <span style="font-size:13px;opacity:.55">+ IVA / mes</span></div>
+          <div class="phint">Perfecto para dar el primer paso</div>
+        </div>
+        <div class="pcard hot">
+          <div class="ptag">⭐ Más elegido</div>
+          <div class="pname" style="margin-top:6px">Impulsa</div>
+          <ul class="pfeats">
+            <li><span class="pcheck">✔</span> Hasta 10 entidades combinadas</li>
+            <li><span class="pcheck">✔</span> Soporte 24×7 prioritario</li>
+            <li><span class="pcheck">✔</span> Tablero de métricas avanzado</li>
+          </ul>
+          <div class="pprice">USD 1.690 <span style="font-size:13px;opacity:.55">+ IVA / mes</span></div>
+          <div class="phint">Diseñado para escalar y optimizar</div>
+        </div>
+        <div class="pcard">
+          <div class="ptag">✦ Personalizado</div>
+          <div class="pname" style="margin-top:6px">A medida</div>
+          <ul class="pfeats">
+            <li><span class="pcheck">✔</span> Entidades ilimitadas</li>
+            <li><span class="pcheck">✔</span> Soporte dedicado + SLA</li>
+            <li><span class="pcheck">✔</span> Integraciones a la medida</li>
+          </ul>
+          <div class="pprice" style="font-size:17px">Cotización personalizada</div>
+          <div class="phint" style="margin-bottom:6px">Para operaciones de mayor escala</div>
+          <a href="mailto:ventas@globalti.com.py" class="pcta">Hablar con un asesor →</a>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="footer">
-    <p>© 2024 GlobalTI S.A. · <a href="mailto:ventas@globalti.com.py">ventas@globalti.com.py</a></p>
-  </div>
+</div><!-- /slides -->
 
-</div>
+<!-- FLOATING NAV -->
+<nav class="nav-float">
+  <button class="nav-btn nav-prev" id="btn-prev" disabled>← Anterior</button>
+  <span class="nav-counter" id="counter">1 / 8</span>
+  <button class="nav-btn nav-next" id="btn-next">Siguiente →</button>
+</nav>
 
 <script>
-// Scroll progress bar
-var bar = document.getElementById('scroll-prog');
-window.addEventListener('scroll', function(){
-  var s = document.documentElement.scrollTop || document.body.scrollTop;
-  var h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  bar.style.width = (h > 0 ? (s/h*100) : 0) + '%';
-}, {passive: true});
+(function(){
+  var slides=document.querySelectorAll('.slide');
+  var total=slides.length;
+  var cur=0;
 
-// Tab switcher
-window.switchTab = function(tab){
-  var isLM = tab === 'lm';
-  var lm = document.getElementById('panel-lm');
-  var caja = document.getElementById('panel-caja');
-  if(lm) lm.style.display = isLM ? 'flex' : 'none';
-  if(caja) caja.style.display = isLM ? 'none' : 'flex';
-  var tl = document.getElementById('tab-lm');
-  var tc = document.getElementById('tab-caja');
-  if(tl) tl.className = 'tab-btn ' + (isLM ? 'on' : 'off');
-  if(tc) tc.className = 'tab-btn ' + (isLM ? 'off' : 'on');
-};
-
-// Fade-in on scroll
-var observer = new IntersectionObserver(function(entries){
-  entries.forEach(function(e){
-    if(e.isIntersecting){
-      e.target.style.opacity = '1';
-      e.target.style.transform = 'translateY(0)';
-      observer.unobserve(e.target);
+  function buildProg(){
+    var bar=document.getElementById('prog-bar');
+    if(!bar) return;
+    bar.innerHTML='';
+    for(var i=0;i<total;i++){
+      var d=document.createElement('div');
+      d.className='p-dot'+(i===cur?' active':i<cur?' done':'');
+      d.setAttribute('data-i',i);
+      (function(el){el.addEventListener('click',function(){goTo(parseInt(el.getAttribute('data-i'),10));})})(d);
+      bar.appendChild(d);
+      if(i<total-1){
+        var c=document.createElement('div');
+        c.className='p-conn'+(i<cur?' done':'');
+        bar.appendChild(c);
+      }
     }
-  });
-}, {threshold: 0.08});
+  }
 
-document.querySelectorAll('.scard, .plans-section').forEach(function(el){
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(18px)';
-  el.style.transition = 'opacity .5s ease, transform .5s ease';
-  observer.observe(el);
-});
+  function goTo(n){
+    if(n<0||n>=total||n===cur) return;
+    slides[cur].classList.remove('active');
+    cur=n;
+    slides[cur].classList.add('active');
+    var prev=document.getElementById('btn-prev');
+    var next=document.getElementById('btn-next');
+    if(prev) prev.disabled=(cur===0);
+    if(next){next.disabled=(cur===total-1);next.textContent=(cur===total-1)?'✓ Fin':'Siguiente →';}
+    var ctr=document.getElementById('counter');
+    if(ctr) ctr.textContent=(cur+1)+' / '+total;
+    buildProg();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function bindBtn(btn,d){
+    if(!btn) return;
+    var lock=false;
+    function go(e){
+      if(lock||btn.disabled) return;
+      lock=true;setTimeout(function(){lock=false;},350);
+      e.preventDefault();e.stopPropagation();
+      goTo(cur+d);
+    }
+    if(window.PointerEvent) btn.addEventListener('pointerup',go);
+    else{btn.addEventListener('touchend',go);btn.addEventListener('click',go);}
+    btn.addEventListener('click',go);
+  }
+
+  function init(){
+    bindBtn(document.getElementById('btn-next'),1);
+    bindBtn(document.getElementById('btn-prev'),-1);
+    var tx=0,ty=0,skip=false;
+    document.body.addEventListener('touchstart',function(e){
+      var t=e.target;
+      skip=!!(t&&t.closest&&(t.closest('.nav-btn')||t.closest('.p-dot')||t.closest('.nav-float')||t.closest('.tbtn')));
+      tx=e.touches[0].clientX;ty=e.touches[0].clientY;
+    },{passive:true});
+    document.body.addEventListener('touchend',function(e){
+      if(skip){skip=false;return;}
+      var dx=e.changedTouches[0].clientX-tx;
+      var dy=Math.abs(e.changedTouches[0].clientY-ty);
+      if(Math.abs(dx)>55&&dy<80){if(dx<0) goTo(cur+1);else goTo(cur-1);}
+    },{passive:true});
+    document.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowDown') goTo(cur+1);
+      if(e.key==='ArrowLeft'||e.key==='ArrowUp') goTo(cur-1);
+    });
+    buildProg();
+  }
+
+  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
+
+  window.switchTab=function(tab){
+    var isLM=tab==='lm';
+    var lm=document.getElementById('panel-lm');
+    var caja=document.getElementById('panel-caja');
+    if(lm) lm.style.display=isLM?'flex':'none';
+    if(caja) caja.style.display=isLM?'none':'flex';
+    var tl=document.getElementById('tab-lm');
+    var tc=document.getElementById('tab-caja');
+    if(tl) tl.className='tbtn '+(isLM?'on':'off');
+    if(tc) tc.className='tbtn '+(isLM?'off':'on');
+  };
+})();
 </script>
 </body>
 </html>
