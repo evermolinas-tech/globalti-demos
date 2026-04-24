@@ -973,23 +973,23 @@
 <script>
 window.DATA = {
   "meta": {
-    "fecha": "23/04/2026",
-    "dia_semana": "Jueves",
+    "fecha": "24/04/2026",
+    "dia_semana": "Viernes",
     "tipo": "diario",
     "estado": "critico",
-    "n_alertas": 18,
-    "n_criticas": 9,
-    "generado": "23/04/2026 19:00"
+    "n_alertas": 21,
+    "n_criticas": 5,
+    "generado": "24/04/2026 19:00"
   },
   "kpis": {
     "caja_gs": 23909491,
     "caja_pct_min": 100,
-    "cobrar_gs": 70349339.61,
+    "cobrar_gs": 400555958,
     "n_deudores": 21,
     "pagos_7d_gs": 139187867,
     "n_pagos_urgentes": 13,
     "fact_usd": 43377.78,
-    "fact_var_pct": -26.20,
+    "fact_var_pct": 526.8,
     "brecha_gs": -73930414
   },
   "caja": {
@@ -997,7 +997,7 @@ window.DATA = {
     "tipo_cambio": 7800,
     "cuentas": [
       {
-        "nombre": "Movimientos Cta.GS (Itaú)",
+        "nombre": "Movimientos Cta.GS",
         "saldo": 997704,
         "moneda": "GS",
         "fecha": "21/04/2026",
@@ -1006,7 +1006,7 @@ window.DATA = {
         "threshold": 5000000
       },
       {
-        "nombre": "Movimientos Cta.USD (Itaú)",
+        "nombre": "Movimientos Cta.USD",
         "saldo": 2861.46,
         "moneda": "USD",
         "fecha": "21/04/2026",
@@ -1019,98 +1019,120 @@ window.DATA = {
         "saldo": 592399,
         "moneda": "GS",
         "fecha": "21/04/2026",
-        "concepto": "Prestamo cuota 16",
+        "concepto": "Presatmo cuota 16",
         "alerta": true,
         "threshold": 1000000
       }
     ]
   },
   "cobros": {
-    "total_gs": 70349339.61,
+    "total_gs": 400555958,
     "n_deudores": 21,
     "aging": {
-      "n030": 28,
-      "n3160": 6,
-      "n6190": 4,
-      "n90": 5,
-      "m030": 70338279.58,
-      "m3160": 6210.88,
-      "m6190": 2263.70,
-      "m90": 2585.45
+      "n030": 20, "n3160": 7, "n6190": 5, "n90": 11,
+      "m030": 164256284, "m3160": 97695624, "m6190": 84993480, "m90": 53610570
     },
     "top5": [
-      { "nombre": "TELEFONICA CELULAR DEL PARAGUAY SAE", "monto": 52275000, "moneda": "GS", "dias": -83 },
-      { "nombre": "ROYAL SEGUROS S.A.", "monto": 18032000, "moneda": "GS", "dias": -7 },
-      { "nombre": "RUTAS DEL MERCOSUR SOCIEDAD ANONIMA", "monto": 9531, "moneda": "GS", "dias": -20 },
-      { "nombre": "TECNOEDIL S.A.", "monto": 7320.38, "moneda": "GS", "dias": 82 },
-      { "nombre": "BOLSI PLAST SA", "monto": 6190.50, "moneda": "GS", "dias": -10 }
+      { "nombre": "TELEFONICA CELULAR DEL PARAGUAY SAE", "monto": 52275000, "moneda": "GS", "dias": 8 },
+      { "nombre": "ROYAL SEGUROS S.A.", "monto": 18032000, "moneda": "GS", "dias": 14 },
+      { "nombre": "RUTAS DEL MERCOSUR SOCIEDAD ANONIMA", "monto": 9531.0, "moneda": "USD", "dias": 80 },
+      { "nombre": "TECNOEDIL S.A.", "monto": 7320.38, "moneda": "USD", "dias": 111 },
+      { "nombre": "BOLSI PLAST SA", "monto": 6190.5, "moneda": "USD", "dias": 51 }
     ],
     "cobros_semana": [
-      { "cliente": "ASEGURADORA TAJY S.A. PROPIEDAD COOPERATIVA", "monto": 2718.18, "moneda": "GS", "fecha": "21/04/2026" },
-      { "cliente": "QUIMFA S.A.", "monto": 550.00, "moneda": "GS", "fecha": "17/04/2026" },
-      { "cliente": "MASEL S.R.L", "monto": 581.99, "moneda": "GS", "fecha": "17/04/2026" },
-      { "cliente": "RUTAS DEL MERCOSUR SOCIEDAD ANONIMA", "monto": 19061.73, "moneda": "GS", "fecha": "16/04/2026" },
-      { "cliente": "TANISBER S.A", "monto": 911.82, "moneda": "GS", "fecha": "16/04/2026" }
+      { "cliente": "ASEGURADORA TAJY S.A. PROPIEDAD COOPERATIVA", "monto": 2718.18, "moneda": "USD", "fecha": "21/04/2026" },
+      { "cliente": "QUIMFA S.A.", "monto": 550.0, "moneda": "USD", "fecha": "17/04/2026" },
+      { "cliente": "MASEL S.R.L", "monto": 291.0, "moneda": "USD", "fecha": "17/04/2026" },
+      { "cliente": "MASEL S.R.L", "monto": 291.0, "moneda": "USD", "fecha": "17/04/2026" },
+      { "cliente": "RUTAS DEL MERCOSUR SOCIEDAD ANONIMA", "monto": 9530.87, "moneda": "USD", "fecha": "16/04/2026" },
+      { "cliente": "RUTAS DEL MERCOSUR SOCIEDAD ANONIMA (POSIBLE DUPLICADO)", "monto": 9530.87, "moneda": "USD", "fecha": "16/04/2026" },
+      { "cliente": "TANISBER S.A", "monto": 911.82, "moneda": "USD", "fecha": "16/04/2026" }
     ]
   },
   "pagos": {
     "vencidos": [
-      { "proveedor": "SET - deudas acumuladas", "monto": 35793557, "moneda": "GS", "vencimiento": "10/01/2026", "dias_vencido": 103 },
-      { "proveedor": "LOL", "monto": 23164.24, "moneda": "USD", "vencimiento": "12/04/2026", "dias_vencido": 11 },
-      { "proveedor": "IPS - febrero 2026", "monto": 8490865, "moneda": "GS", "vencimiento": "11/03/2026", "dias_vencido": 43 },
-      { "proveedor": "IPS - marzo 2026", "monto": 8490865, "moneda": "GS", "vencimiento": "11/04/2026", "dias_vencido": 12 },
-      { "proveedor": "Ever Molinas", "monto": 6300.00, "moneda": "USD", "vencimiento": "31/03/2026", "dias_vencido": 23 },
-      { "proveedor": "Codevise aldo crm", "monto": 495.00, "moneda": "USD", "vencimiento": "05/04/2026", "dias_vencido": 18 },
-      { "proveedor": "Ps Line SA", "monto": 330.00, "moneda": "USD", "vencimiento": "20/04/2026", "dias_vencido": 3 }
+      { "proveedor": "Ever Molinas", "monto": 3150.0, "moneda": "USD", "vencimiento": "28/02/2026", "dias_vencido": 55 },
+      { "proveedor": "Ever Molinas", "monto": 3150.0, "moneda": "USD", "vencimiento": "31/03/2026", "dias_vencido": 24 },
+      { "proveedor": "IPS - febrero  26", "monto": 8490865, "moneda": "GS", "vencimiento": "11/03/2026", "dias_vencido": 44 },
+      { "proveedor": "IPS - marzo 26", "monto": 8490865, "moneda": "GS", "vencimiento": "11/04/2026", "dias_vencido": 13 },
+      { "proveedor": "SET- deudas acumuladas", "monto": 35793557, "moneda": "GS", "vencimiento": "10/01/2026", "dias_vencido": 104 },
+      { "proveedor": "LOL", "monto": 2373.63, "moneda": "USD", "vencimiento": "24/11/2025", "dias_vencido": 151 },
+      { "proveedor": "LOL", "monto": 507.53, "moneda": "USD", "vencimiento": "17/12/2025", "dias_vencido": 128 },
+      { "proveedor": "LOL", "monto": 1182.26, "moneda": "USD", "vencimiento": "17/12/2025", "dias_vencido": 128 },
+      { "proveedor": "LOL", "monto": 1655.67, "moneda": "USD", "vencimiento": "17/12/2025", "dias_vencido": 128 },
+      { "proveedor": "LOL", "monto": 113.89, "moneda": "USD", "vencimiento": "17/12/2025", "dias_vencido": 128 },
+      { "proveedor": "LOL", "monto": 1667.88, "moneda": "USD", "vencimiento": "16/01/2026", "dias_vencido": 98 },
+      { "proveedor": "LOL", "monto": 113.89, "moneda": "USD", "vencimiento": "16/01/2026", "dias_vencido": 98 },
+      { "proveedor": "LOL", "monto": 1251.89, "moneda": "USD", "vencimiento": "16/01/2026", "dias_vencido": 98 },
+      { "proveedor": "LOL", "monto": 455.59, "moneda": "USD", "vencimiento": "16/01/2026", "dias_vencido": 98 },
+      { "proveedor": "LOL", "monto": 113.89, "moneda": "USD", "vencimiento": "16/02/2026", "dias_vencido": 67 },
+      { "proveedor": "LOL", "monto": 1663.72, "moneda": "USD", "vencimiento": "16/02/2026", "dias_vencido": 67 },
+      { "proveedor": "LOL", "monto": 274.09, "moneda": "USD", "vencimiento": "16/02/2026", "dias_vencido": 67 },
+      { "proveedor": "LOL", "monto": 1383.93, "moneda": "USD", "vencimiento": "16/02/2026", "dias_vencido": 67 },
+      { "proveedor": "LOL", "monto": 1493.93, "moneda": "USD", "vencimiento": "15/03/2026", "dias_vencido": 40 },
+      { "proveedor": "LOL", "monto": 333.75, "moneda": "USD", "vencimiento": "15/03/2026", "dias_vencido": 40 },
+      { "proveedor": "LOL", "monto": 226.75, "moneda": "USD", "vencimiento": "15/03/2026", "dias_vencido": 40 },
+      { "proveedor": "LOL", "monto": 1709.11, "moneda": "USD", "vencimiento": "15/03/2026", "dias_vencido": 40 },
+      { "proveedor": "LOL", "monto": 960.74, "moneda": "USD", "vencimiento": "12/04/2026", "dias_vencido": 12 },
+      { "proveedor": "LOL", "monto": 791.26, "moneda": "USD", "vencimiento": "12/04/2026", "dias_vencido": 12 },
+      { "proveedor": "LOL", "monto": 1786.28, "moneda": "USD", "vencimiento": "12/04/2026", "dias_vencido": 12 },
+      { "proveedor": "LOL", "monto": 264.08, "moneda": "USD", "vencimiento": "12/04/2026", "dias_vencido": 12 },
+      { "proveedor": "LOL", "monto": 436.98, "moneda": "USD", "vencimiento": "12/04/2026", "dias_vencido": 12 },
+      { "proveedor": "LOL", "monto": 2403.5, "moneda": "USD", "vencimiento": "12/04/2026", "dias_vencido": 12 },
+      { "proveedor": "Ps Line SA", "monto": 330.0, "moneda": "USD", "vencimiento": "20/04/2026", "dias_vencido": 4 },
+      { "proveedor": "Codevise aldo crm", "monto": 495.0, "moneda": "USD", "vencimiento": "05/04/2026", "dias_vencido": 19 }
     ],
     "proximos_7d": [
       { "proveedor": "VYD", "monto": 22450000, "moneda": "GS", "vencimiento": "26/04/2026" },
+      { "proveedor": "Karina Molinas", "monto": 2279200, "moneda": "GS", "vencimiento": "30/04/2026" },
       { "proveedor": "Francisco Benitez", "monto": 20000000, "moneda": "GS", "vencimiento": "30/04/2026" },
       { "proveedor": "Horacio Encina", "monto": 20000000, "moneda": "GS", "vencimiento": "30/04/2026" },
-      { "proveedor": "David Britez", "monto": 20000000, "moneda": "GS", "vencimiento": "30/04/2026" },
-      { "proveedor": "Donato Garcia", "monto": 7843763, "moneda": "GS", "vencimiento": "30/04/2026" },
       { "proveedor": "Gilda Fernandez", "monto": 5180000, "moneda": "GS", "vencimiento": "30/04/2026" },
+      { "proveedor": "Donato Garcia", "monto": 7843763, "moneda": "GS", "vencimiento": "30/04/2026" },
+      { "proveedor": "Juan Olmedo", "monto": 2639000, "moneda": "GS", "vencimiento": "30/04/2026" },
       { "proveedor": "Ruben Torres", "monto": 4666662, "moneda": "GS", "vencimiento": "30/04/2026" },
       { "proveedor": "Lucas Samaniego", "monto": 3548134, "moneda": "GS", "vencimiento": "30/04/2026" },
       { "proveedor": "Agustin Encina", "monto": 3111108, "moneda": "GS", "vencimiento": "30/04/2026" },
       { "proveedor": "Cynthia Aguayo", "monto": 2900000, "moneda": "GS", "vencimiento": "30/04/2026" },
-      { "proveedor": "Juan Olmedo", "monto": 2639000, "moneda": "GS", "vencimiento": "30/04/2026" },
-      { "proveedor": "Karina Molinas", "monto": 2279200, "moneda": "GS", "vencimiento": "30/04/2026" },
-      { "proveedor": "Ever Molinas", "monto": 3150.00, "moneda": "USD", "vencimiento": "30/04/2026" }
+      { "proveedor": "David Britez", "monto": 20000000, "moneda": "GS", "vencimiento": "30/04/2026" },
+      { "proveedor": "Ever Molinas", "monto": 3150.0, "moneda": "USD", "vencimiento": "30/04/2026" }
     ],
-    "proximos_30d_gs": 183383603,
-    "total_pagar_gs": 1496459264
+    "proximos_30d_gs": 44195736,
+    "total_pagar_gs": 748229632
   },
   "pnl": {
     "mes": "Abril 2026",
     "fact_usd": 43377.78,
     "fact_gs": 0,
     "n_facturas": 19,
-    "fact_ant_usd": 58776.60,
-    "fact_var_pct": -26.20,
+    "fact_ant_usd": 6920.30,
+    "fact_var_pct": 526.8,
     "ingresos_gs": 122017000,
     "costos_gs": 195947414,
     "brecha_gs": -73930414
   },
   "alertas": [
-    { "nivel": "rojo", "texto": "30 pagos VENCIDOS sin pagar — GS 52,775,287 + USD 30,289.24" },
-    { "nivel": "rojo", "texto": "SET deudas acumuladas vencidas desde 10/01/2026: GS 35,793,557 — riesgo fiscal alto" },
-    { "nivel": "rojo", "texto": "IPS (feb + mar 2026) impagos: GS 16,981,730 — 2 cuotas consecutivas, riesgo legal" },
-    { "nivel": "rojo", "texto": "LOL: 23 facturas vencidas USD 23,164.24 desde nov/2025 — mora prolongada crítica" },
-    { "nivel": "rojo", "texto": "Ever Molinas: USD 6,300 vencidos (feb + mar 2026) sin pagar" },
-    { "nivel": "rojo", "texto": "BRECHA NEGATIVA: Gs -73,930,414 — ingresos recurrentes cubren solo 62.3% de estructura de costos" },
-    { "nivel": "rojo", "texto": "Cta.GS Itaú: saldo 997,704 GS por debajo del mínimo requerido (5,000,000 GS)" },
-    { "nivel": "rojo", "texto": "Cta.GS BNF: saldo 592,399 GS por debajo del mínimo requerido (1,000,000 GS)" },
-    { "nivel": "rojo", "texto": "Cobros críticos >90 días: Azucarera Paraguaya (266d), Avanza Paraguay (205d), Cardioteq SA (205-236d)" },
-    { "nivel": "naranja", "texto": "URGENTE: Nómina abril vence 30/04/2026 — GS 114,617,867 (10 colaboradores + VYD)" },
-    { "nivel": "naranja", "texto": "VYD vence 26/04/2026 — GS 22,450,000 en 3 días" },
-    { "nivel": "naranja", "texto": "Ever Molinas USD 3,150 vence 30/04/2026 (cuota abril pendiente)" },
-    { "nivel": "naranja", "texto": "HEY: USD 18,715.75 pendiente — segundo mayor acreedor en USD" },
-    { "nivel": "naranja", "texto": "Dacas SRL: USD 11,516.90 pendiente — tercer mayor acreedor en USD" },
-    { "nivel": "naranja", "texto": "Cobros alerta 61-90 días: MECOMPA (83d Gs 1,012), PROTEK (82d Gs 363), TECNOEDIL (82d Gs 889)" },
-    { "nivel": "amarillo", "texto": "Facturación Abril -26.2% vs Marzo (mes parcial al 20/04 — 19 vs 47 facturas)" },
-    { "nivel": "amarillo", "texto": "RANGO TRUNCADO: Reporte de Cobros — expandir rango para datos completos" },
-    { "nivel": "amarillo", "texto": "RANGO TRUNCADO: Facturación — expandir rango A1:S500 a A1:S1000" }
+    { "nivel": "rojo", "texto": "30 pagos VENCIDOS sin pagar: GS 52,775,287 + USD 30,289.24" },
+    { "nivel": "rojo", "texto": "SET- deudas acumuladas: GS 35,793,557 vencido desde 10/01/2026 — riesgo fiscal" },
+    { "nivel": "rojo", "texto": "IPS feb+mar 2026: GS 16,981,730 vencido — riesgo MTESS" },
+    { "nivel": "rojo", "texto": "LOL: USD 23,164.24 en 23 facturas vencidas desde nov-2025" },
+    { "nivel": "rojo", "texto": "BRECHA NEGATIVA: Gs -73,930,414 — ingresos recurrentes cubren solo el 62% de la estructura de costos" },
+    { "nivel": "naranja", "texto": "Cobros vencidos — Azucarera Paraguaya S.A.: 296 días de antigüedad — USD 1,290.00 pendiente" },
+    { "nivel": "naranja", "texto": "Cobros vencidos — Cardioteq SA: 265 días de antigüedad — USD 811.45 pendiente (3 facturas)" },
+    { "nivel": "naranja", "texto": "Cobros vencidos — Avanza Paraguay S.A.: 227 días de antigüedad — USD 484.00 pendiente" },
+    { "nivel": "naranja", "texto": "Cobros vencidos — TECNOEDIL S.A.: 111 días de antigüedad — USD 7,320.38 pendiente (7 facturas)" },
+    { "nivel": "naranja", "texto": "Cobros vencidos — PROTEK S.R.L.: 111 días de antigüedad — USD 4,901.28 pendiente (4 facturas)" },
+    { "nivel": "naranja", "texto": "Cobros vencidos — MECOMPA S.A.: 101 días de antigüedad — USD 3,036.00 pendiente (3 facturas)" },
+    { "nivel": "naranja", "texto": "Ever Molinas: USD 6,300 vencido (feb+mar 2026) + USD 3,150 vence 30/04/2026" },
+    { "nivel": "naranja", "texto": "Movimientos Cta.GS saldo bajo: 997,704 GS (mínimo 5,000,000 GS)" },
+    { "nivel": "naranja", "texto": "Mov Cta.GS BNF saldo bajo: 592,399 GS (mínimo 1,000,000 GS)" },
+    { "nivel": "amarillo", "texto": "13 pagos urgentes próximos 7 días: GS 114,617,867 + USD 3,150.00" },
+    { "nivel": "amarillo", "texto": "PLANILLA SUELDOS 30/04/2026: al menos GS 99,617,867 en sueldos y honorarios por pagar" },
+    { "nivel": "amarillo", "texto": "VYD: GS 22,450,000 vence 26/04/2026 (2 días)" },
+    { "nivel": "amarillo", "texto": "RUTAS DEL MERCOSUR: 80 días de antigüedad — USD 9,531.00 en cuentas a cobrar — verificar si la factura fue saldada con el cobro del 16/04" },
+    { "nivel": "amarillo", "texto": "POSIBLE DUPLICADO — Cobro RUTAS DEL MERCOSUR 16/04/2026 aparece 2 veces con mismo recibo 1699 y mismo monto USD 9,530.87 — verificar en sistema" },
+    { "nivel": "info", "texto": "Cobros del reporte expresados en USD — no se detectaron transacciones en GS en el reporte de cobros" },
+    { "nivel": "info", "texto": "Cobros Abril 2026 (USD 61,331.39) superan Marzo 2026 (USD 45,041.71) en +36.2% — mes aún en curso" }
   ]
 };
 window.DATA_LOGO_B64 = "iVBORw0KGgoAAAANSUhEUgAAAV4AAABUCAYAAADKx1/IAAAEtGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iCiAgICB4bWxuczpleGlmPSJodHRwOi8vbnMuYWRvYmUuY29tL2V4aWYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgdGlmZjpJbWFnZUxlbmd0aD0iODQiCiAgIHRpZmY6SW1hZ2VXaWR0aD0iMzUwIgogICB0aWZmOlJlc29sdXRpb25Vbml0PSIyIgogICB0aWZmOlhSZXNvbHV0aW9uPSIyMDAuMCIKICAgdGlmZjpZUmVzb2x1dGlvbj0iMjAwLjAiCiAgIGV4aWY6UGl4ZWxYRGltZW5zaW9uPSIzNTAiCiAgIGV4aWY6UGl4ZWxZRGltZW5zaW9uPSI4NCIKICAgZXhpZjpDb2xvclNwYWNlPSIxIgogICBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIgogICBwaG90b3Nob3A6SUNDUHJvZmlsZT0ic1JHQiBJRUM2MTk2Ni0yLjEiCiAgIHhtcDpNb2RpZnlEYXRlPSIyMDIx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";
